@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Podcast Ad Video Wall</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 24px;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    width: 100%;
+    max-width: 1200px;
+  }
+  .cell {
+    position: relative;
+    overflow: hidden;
+    border-radius: 16px;
+    box-shadow: 0 6px 28px rgba(0, 0, 0, 0.25);
+    aspect-ratio: 1 / 1;
+  }
+  .cell video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+</style>
+</head>
+<body>
+<div class="grid" id="grid"></div>
+<script>
+  const videos = [
+    'file:///C:/Users/lucas/OneDrive/Documents/Premiere/podcast-ad-1person.mp4',
+    'file:///C:/Users/lucas/OneDrive/Documents/Premiere/podcast-ad-2-coaching-dying.mp4'
+  ];
+
+  // Each cell gets a different start offset (in seconds) so they all look unique
+  const offsets = [
+    3, 17, 8, 22,
+    12, 1, 25, 6,
+    19, 10, 4, 15,
+    24, 7, 20, 2
+  ];
+
+  const grid = document.getElementById('grid');
+
+  for (let i = 0; i < 16; i++) {
+    const cell = document.createElement('div');
+    cell.className = 'cell';
+
+    const video = document.createElement('video');
+    video.src = videos[i % 2];
+    video.muted = true;
+    video.loop = true;
+    video.playsInline = true;
+    video.preload = 'auto';
+
+    // Set start offset once metadata is loaded
+    const offset = offsets[i];
+    video.addEventListener('loadedmetadata', () => {
+      video.currentTime = offset % video.duration;
+      video.play();
+    });
+
+    cell.appendChild(video);
+    grid.appendChild(cell);
+  }
+</script>
+</body>
+</html>
