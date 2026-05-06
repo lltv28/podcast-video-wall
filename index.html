@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Podcast Ad Video Wall</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@500&display=swap" rel="stylesheet">
 <script src="https://customer-nguqf0yqc9xf45px.cloudflarestream.com/31af203bfbc05752aa489e5c47f86623/iframe"></script>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -28,6 +31,7 @@
     border-radius: 16px;
     box-shadow: 0 6px 28px rgba(0, 0, 0, 0.25);
     aspect-ratio: 1 / 1;
+    background: #111;
   }
   .cell stream-video,
   .cell iframe {
@@ -42,6 +46,34 @@
     min-width: 100%;
     min-height: 100%;
     transform: translate(-50%, -50%);
+  }
+  .caption {
+    position: absolute;
+    left: 50%;
+    bottom: 28px;
+    z-index: 2;
+    width: calc(100% - 32px);
+    transform: translateX(-50%);
+    color: #fff;
+    font-family: 'Instrument Sans', Arial, Helvetica, sans-serif;
+    font-size: clamp(10px, 1.09vw, 17px);
+    font-weight: 500;
+    line-height: 1.05;
+    letter-spacing: 0;
+    text-align: center;
+    text-transform: none;
+    text-shadow:
+      0 1px 0 rgba(0, 0, 0, 0.95),
+      0 0 4px rgba(0, 0, 0, 0.9),
+      0 0 7px rgba(0, 0, 0, 0.75);
+    pointer-events: none;
+  }
+  .caption span {
+    background: rgba(0, 0, 0, 0.35);
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+    padding: 1px 3px 2px;
+    border-radius: 3px;
   }
 </style>
 </head>
@@ -60,6 +92,25 @@
     24, 7, 20, 2
   ];
 
+  const captionSets = [
+    ['This is the part people remember', 'The offer is simple', 'That is why it works'],
+    ['You only need one clear hook', 'Then show the result', 'Keep the story moving'],
+    ['Most ads lose people early', 'This opens with the pain', 'Then it earns attention'],
+    ['Start with the outcome', 'Make the value obvious', 'Give them a reason to care'],
+    ['The video should feel native', 'Like something already in the feed', 'That is what gets watched'],
+    ['Creative is the lever', 'Better angles beat more spend', 'This is built to convert'],
+    ['Say the promise fast', 'Then prove it visually', 'Do not make them guess'],
+    ['Show the product right away', 'Let the viewer understand it', 'Then make the next step clear'],
+    ['One idea per video', 'One reason to keep watching', 'One action at the end'],
+    ['The pacing matters here', 'Every second has a job', 'Nothing should feel slow'],
+    ['Make the pain obvious', 'Then show the simple fix', 'That is the whole story'],
+    ['This is where the solution lands', 'The viewer sees the change', 'Now the offer makes sense'],
+    ['Proof beats polish', 'Real examples feel stronger', 'That is what builds trust'],
+    ['Simple copy wins', 'Short lines are easier to follow', 'The message stays clear'],
+    ['Every clip has a job', 'Some educate and some sell', 'Together they fill the funnel'],
+    ['Views are only the start', 'The goal is qualified leads', 'Then the product takes over']
+  ];
+
   const grid = document.getElementById('grid');
   const base = 'https://customer-nguqf0yqc9xf45px.cloudflarestream.com';
 
@@ -75,6 +126,21 @@
     iframe.loading = 'lazy';
 
     cell.appendChild(iframe);
+
+    const caption = document.createElement('div');
+    caption.className = 'caption';
+
+    const captionText = document.createElement('span');
+    captionText.textContent = captionSets[i][0];
+    caption.appendChild(captionText);
+    cell.appendChild(caption);
+
+    let captionIndex = 0;
+    setInterval(() => {
+      captionIndex = (captionIndex + 1) % captionSets[i].length;
+      captionText.textContent = captionSets[i][captionIndex];
+    }, 1300 + (i % 4) * 150);
+
     grid.appendChild(cell);
   }
 </script>
